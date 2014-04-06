@@ -1,0 +1,78 @@
+{% if aliases %}
+server {
+    server_name {{ aliases|join(" ") }};
+    rewrite ^ http://{{ fqdn }}$request_uri? permanent;
+}
+{% endif %}
+
+{% if subdomain_to_path_alias %}
+server {
+    server_name {{ subdomain_to_path_alias }};
+    rewrite ^ http://{{ fqdn }}/{{ subdomain_to_path_alias.split('.', 1)[0] }}$request_uri? permanent;
+}
+{% endif %}
+
+{%- if ssl %}
+server {
+    listen 80;
+    server_name {{ fqdn }};
+    rewrite ^(.*) https://{{ fqdn }}$1 permanent;
+}
+{%- endif %}
+
+server {
+    {%- if ssl %}
+    listen 443{%- if default %} default deferred {%- endif %};
+
+    ssl on;
+    ssl_certificate /etc/ssl/certs/{{ fqdn }}.crt;
+    ssl_certificate_key /etc/ssl/private/{{ fqdn }}.key;
+    {%- elif default %}
+    listen 80 default deferred;
+    {%- endif %}
+
+    server_name {{ fqdn }};
+    client_max_body_size 10m;
+
+    {%- if root %}
+    root {{ root }};
+    {%- endif %}
+
+    access_log /var/log/nginx/{{ fqdn }}.access.log;
+
+    keepalive_timeout 5;
+
+    location = /robots.txt {
+        access_log off;
+        log_not_found off;
+    }
+
+    location = /favicon.ico {
+        access_log off;
+        expires 3M;
+        log_not_found off;
+    }
+
+    {%- if static_prefix %}
+    location {{ static_prefix }} {
+        access_log off;
+        expires max;
+    }
+    {%- else %}
+    location ~* \.(jpg|jpeg|gif|css|png|js|ico)$ {
+        access_log off;
+        expires 30d;
+    }
+    {%- endif %}
+
+    location / {
+        {% if site_type == 'static' %}
+        index index.html index.htm;
+        {% elif site_type == 'uwsgi' %}
+        uwsgi_pass      unix:{{ uwsgi_socket_file }};
+        include         uwsgi_params;
+        uwsgi_param     UWSGI_SCHEME        $scheme;
+        uwsgi_param     SERVER_SOFTWARE     nginx/$nginx_version;
+        {% endif %}
+    }
+}

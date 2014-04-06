@@ -1,14 +1,12 @@
 postgresql-packages:
-    pkg:
-        - installed
+    pkg.installed:
         - names:
             - postgresql-9.1
             - python-psycopg2
             - postgresql-server-dev-9.1
 
 postgresql:
-    service:
-        - running
+    service.running:
         - enable: True
         - watch:
             - file: /etc/postgresql/9.1/main/pg_hba.conf
@@ -16,8 +14,7 @@ postgresql:
             - pkg: postgresql-packages
 
 /etc/postgresql/9.1/main/pg_hba.conf:
-    file:
-        - managed
+    file.managed:
         - source: salt://postgresql/files/pg_hba.conf
         - user: postgres
         - group: postgres

@@ -1,0 +1,12 @@
+[uwsgi]
+app = {{ app }}
+base = {{ project_path }}
+chdir = {{ project_path }}
+home = {{ home }}
+master = true
+max-requests = {{ max_requests }}
+module = {{ module }}
+plugins = python
+processes = {{ processes }}
+socket = {{ socket_file }}
+vhost = true

@@ -29,7 +29,7 @@ nginx:
             - pkg: nginx-packages
         - context: {{ conf.get('site', {}) }}
         - defaults:
-            root: /home/{{ name }}/{{ name }}
+            root: /home/{{ name }}/www
             site_type: static
             ssl: False
 

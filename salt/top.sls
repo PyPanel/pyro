@@ -3,7 +3,8 @@ base:
         - base-packages
         - users
         - ssh
-        - git
         - postgresql
+        - git
+        - python
         - uwsgi
         - nginx

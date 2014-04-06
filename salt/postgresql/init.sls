@@ -21,3 +21,21 @@ postgresql:
         - mode: 644
         - require:
             - pkg: postgresql-packages
+
+{% for name, conf in pillar.get('webapps', {}).iteritems() %}
+{% if conf.get('database') %}
+postgres_user_{{ name }}:
+    postgres_user.present:
+        - name: {{ name }}
+        - password: {{ conf['database']['password'] }}
+        - runas: postgres
+
+postgres_database_{{ name }}:
+    postgres_database.present:
+        - name: {{ name }}
+        - owner: {{ name }}
+        - require:
+            - postgres_user: postgres_user_{{ name }}
+        - runas: postgres
+{% endfor %}
+{% endif %}

@@ -1,4 +1,4 @@
-python_packages:
+python:
     pkg.installed:
         - names:
             - python-dev
@@ -6,7 +6,7 @@ python_packages:
             - python-pip
 
 {% for name, conf in pillar.get('webapps', {}).iteritems() %}
-{% if conf.get('app') and conf['app'].get('venv') %}
+{% if conf.get('app') and conf['app'].get('venv', True) %}
 /home/{{ name }}/venv:
     file.directory:
         - user: {{ name }}
@@ -26,4 +26,3 @@ python_packages:
             - pkg: python_packages
 {% endif %}
 {% endfor %}
-

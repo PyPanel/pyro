@@ -1,17 +1,16 @@
-postgresql-packages:
+postgresql:
     pkg.installed:
         - names:
             - postgresql-9.1
             - python-psycopg2
             - postgresql-server-dev-9.1
 
-postgresql:
     service.running:
         - enable: True
         - watch:
             - file: /etc/postgresql/9.1/main/pg_hba.conf
         - require:
-            - pkg: postgresql-packages
+            - pkg: postgresql
 
 /etc/postgresql/9.1/main/pg_hba.conf:
     file.managed:
@@ -20,10 +19,10 @@ postgresql:
         - group: postgres
         - mode: 644
         - require:
-            - pkg: postgresql-packages
+            - pkg: postgresql
 
 {% for name, conf in pillar.get('webapps', {}).iteritems() %}
-{% if conf.get('database') %}
+{% if conf.get('database') and conf['database'].get('type', 'postgresql') == 'postgresql' %}
 postgres_user_{{ name }}:
     postgres_user.present:
         - name: {{ name }}
@@ -37,5 +36,6 @@ postgres_database_{{ name }}:
         - require:
             - postgres_user: postgres_user_{{ name }}
         - runas: postgres
+{% endif %}
 {% endfor %}
 {% endif %}

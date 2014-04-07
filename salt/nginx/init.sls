@@ -1,13 +1,10 @@
-nginx-packages:
-    pkg.installed:
-        - names:
-            - nginx
-
 nginx:
+    pkg.installed
+
     service.running:
         - enable: True
         - require:
-            - pkg: nginx-packages
+            - pkg: nginx
         - watch:
             - file: /etc/nginx/nginx.conf
             - file: /etc/nginx/conf.d/*.conf
@@ -18,6 +15,7 @@ nginx:
     file.absent
 
 {% for name, conf in pillar.get('webapps', {}).iteritems() %}
+{% if conf.get('site') %}
 /etc/nginx/sites-available/{{ name }}.conf:
     file.managed:
         - source: salt://nginx/files/site.jinja
@@ -26,7 +24,7 @@ nginx:
         - group: www-data
         - mode: 755
         - require:
-            - pkg: nginx-packages
+            - pkg: nginx
         - context: {{ conf.get('site', {}) }}
         - defaults:
             root: /home/{{ name }}/www
@@ -39,5 +37,6 @@ nginx:
         - watch_in:
             - service: nginx
         - require:
-            - pkg: nginx-packages
+            - pkg: nginx
+{% endif %}
 {% endfor %}

@@ -1,3 +1,14 @@
+ssh:
+    pkg.installed:
+        - names:
+            - openssh-server
+            - openssh-client
+
+    service.running:
+        - enable: True
+        - require:
+            - pkg: ssh
+
 {% for name, conf in pillar.get('webapps', {}).iteritems() %}
 /home/{{ name }}/.ssh:
     file.directory:

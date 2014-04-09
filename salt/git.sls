@@ -20,7 +20,7 @@ git:
         - require:
             - pkg: base_packages
             - file.directory: /home/{{ name }}/www
-            - ssh_known_hosts: {{ conf.get('repo_type', 'github') }}
+            - ssh_known_hosts: {{ conf['repo'].get('type', 'github') }}_{{ name }}
         - watch_in:
             - service: uwsgi
 {% endif %} 

@@ -15,11 +15,11 @@ logrotate:
     file.managed:
         - source: salt://logrotate/files/logrotate.jinja
         - template: jinja
+        - context:
+            name: {{ name }}
         - user: root
         - group: root
         - mode: 644
         - require:
             - pkg: logrotate
-        - context:
-            name: {{ name }}
 {% endfor %}

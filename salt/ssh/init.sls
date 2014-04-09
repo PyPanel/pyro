@@ -30,7 +30,7 @@ ssh_auth_{{ name }}:
     file.managed:
         - user: {{ name }}
         - group: {{ name }}
-        - mode: 700
+        - mode: 600
         - require:
             - file.directory: /home/{{ name }}/.ssh
 

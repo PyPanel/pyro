@@ -18,9 +18,9 @@ uwsgi:
     file.managed:
         - source: salt://uwsgi/files/app.jinja
         - template: jinja
-        - user: www-data
-        - group: www-data
-        - mode: 755
+        - user: root
+        - group: root
+        - mode: 644
         - context: {{ conf.get('app', {}) }}
         - defaults:
             app: application

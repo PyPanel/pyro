@@ -20,9 +20,9 @@ nginx:
     file.managed:
         - source: salt://nginx/files/site.jinja
         - template: jinja
-        - user: www-data
-        - group: www-data
-        - mode: 755
+        - user: root
+        - group: root
+        - mode: 644
         - require:
             - pkg: nginx
         - context: {{ conf.get('site', {}) }}

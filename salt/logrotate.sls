@@ -1,2 +1,0 @@
-logrotate:
-    pkg.installed

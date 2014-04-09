@@ -1,0 +1,9 @@
+/home/{{ name }}/log/*.log {
+    weekly
+    missingok
+    rotate 7
+    compress
+    delaycompress
+    notifempty
+    create 0640 {{ name }} www-data
+}

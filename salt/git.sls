@@ -8,7 +8,7 @@ git:
         - user: {{ name }}
         - group: www-data
         - mode: 775
-        - makedirs: true
+        - makedirs: True
         - require:
             - file.directory: /home/{{ name }}
 

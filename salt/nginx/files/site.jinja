@@ -38,7 +38,7 @@ server {
     root {{ root }};
     {%- endif %}
 
-    access_log /var/log/nginx/{{ fqdn }}.access.log;
+    access_log /home/{{ name }}/log/nginx.access.log;
 
     keepalive_timeout 5;
 

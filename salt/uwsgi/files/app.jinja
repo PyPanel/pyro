@@ -1,12 +1,11 @@
 [uwsgi]
-app = {{ app }}
-base = {{ base }}
-chdir = {{ chdir }}
-home = {{ home }}
+base = /home/{{ name }}/www/{{ name }}
+callable = application
+chdir = /home/{{ name }}/www/{{ name }}
+home = /home/{{ name }}/venv
 master = true
-max-requests = {{ max_requests }}
-module = {{ module }}
+max-requests = 5000
+module = wsgi
 plugins = python
-processes = {{ processes }}
-socket = {{ socket }}
+processes = 4
 vhost = true

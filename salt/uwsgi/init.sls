@@ -21,17 +21,8 @@ uwsgi:
         - user: root
         - group: root
         - mode: 644
-        - context: {{ conf.get('app', {}) }}
-        - defaults:
-            app: application
-            base: /home/{{ name }}/www
-            chdir: /home/{{ name }}/www
-            harakiri: 30
-            home: /home/{{ name }}/venv
-            max_requests: 5000
-            module: {{ name }}.wsgi
-            processes: 4
-            socket: /var/run/uwsgi/app/{{ name }}/socket
+        - context:
+            name: {{ name }}
         - require:
             - pkg: uwsgi
 

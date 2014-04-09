@@ -1,6 +1,6 @@
 base:
     '*':
-        - base-packages
+        - base_packages
         - users
         - ssh
         - postgresql

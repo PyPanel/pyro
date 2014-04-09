@@ -1,4 +1,4 @@
-base-packages:
+base_packages:
     pkg:
         - installed
         - names:

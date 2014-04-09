@@ -1,4 +1,5 @@
 {% for name, conf in pillar.get('webapps', {}).iteritems() %}
+{% if conf.get('repo') %}
 /home/{{ name }}/www:
     file.directory:
         - user: {{ name }}
@@ -6,19 +7,18 @@
         - mode: 775
         - makedirs: true
         - require:
-            - group: {{ name }}
-            - user: {{ name }}
-            - file: /home/{{ name }}
+            - file.directory: /home/{{ name }}
 
-{{ conf['repo'] }}:
+{{ conf['repo']['url'] }}:
     git.latest:
         - rev: {{ conf.get('rev', 'master') }}
         - target: /home/{{ name }}/www
         - force: True
         - require:
-            - pkg: base-packages
-            - file: /home/{{ name }}/www
+            - pkg: base_packages
+            - file.directory: /home/{{ name }}/www
             - ssh_known_hosts: {{ conf.get('repo_type', 'github') }}
         - watch_in:
             - service: uwsgi
+{% endif %} 
 {% endfor %}

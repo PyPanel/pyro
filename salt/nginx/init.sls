@@ -1,13 +1,10 @@
-nginx_packages:
-    pkg.installed:
-        - names:
-            - nginx
-
 nginx:
+    pkg.installed
+
     service.running:
         - enable: True
         - require:
-            - pkg: nginx_packages
+            - pkg: nginx
         - watch:
             - file: /etc/nginx/nginx.conf
             - file: /etc/nginx/conf.d/*.conf
@@ -27,7 +24,7 @@ nginx:
         - group: www-data
         - mode: 755
         - require:
-            - pkg: nginx_packages
+            - pkg: nginx
         - context: {{ conf.get('site', {}) }}
         - defaults:
             root: /home/{{ name }}/www
@@ -40,6 +37,6 @@ nginx:
         - watch_in:
             - service: nginx
         - require:
-            - pkg: nginx_packages
-{% endfor %}
+            - pkg: nginx
 {% endif %}
+{% endfor %}

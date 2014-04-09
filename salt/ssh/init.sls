@@ -1,3 +1,14 @@
+ssh:
+    pkg.installed:
+        - names:
+            - openssh-server
+            - openssh-client
+
+    service.running:
+        - enable: True
+        - require:
+            - pkg: ssh
+
 {% for name, conf in pillar.get('webapps', {}).iteritems() %}
 /home/{{ name }}/.ssh:
     file.directory:
@@ -6,14 +17,14 @@
         - mode: 700
         - makedirs: True
         - require:
-            - file: /home/{{ name }}
+            - file.directory: /home/{{ name }}
 
-{{ name }}-auth:
+ssh_auth_{{ name }}:
     ssh_auth.present:
         - user: {{ name }}
         - source: salt://ssh/files/{{ name }}.id_rsa.pub
         - require:
-            - file: /home/{{ name }}/.ssh
+            - file.directory: /home/{{ name }}/.ssh
 
 /home/{{ name }}/.ssh/known_hosts:
     file.managed:
@@ -21,9 +32,9 @@
         - group: {{ name }}
         - mode: 700
         - require:
-            - file: /home/{{ name }}/.ssh
+            - file.directory: /home/{{ name }}/.ssh
 
-{{ name }}-bitbucket:
+bitbucket_{{ name }}:
     ssh_known_hosts.present:
         - name: bitbucket.org
         - user: {{ name }}
@@ -31,7 +42,7 @@
         - require:
             - file: /home/{{ name }}/.ssh/known_hosts
 
-{{ name }}-github:
+github_{{ name }}:
     ssh_known_hosts.present:
         - name: github.com
         - user: {{ name }}

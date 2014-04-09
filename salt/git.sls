@@ -1,3 +1,6 @@
+git:
+    pkg.installed
+
 {% for name, conf in pillar.get('webapps', {}).iteritems() %}
 {% if conf.get('repo') %}
 /home/{{ name }}/www:
@@ -11,7 +14,7 @@
 
 {{ conf['repo']['url'] }}:
     git.latest:
-        - rev: {{ conf.get('rev', 'master') }}
+        - rev: {{ conf['repo'].get('rev', 'master') }}
         - target: /home/{{ name }}/www
         - force: True
         - require:

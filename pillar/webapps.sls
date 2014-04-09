@@ -18,6 +18,8 @@ webapps:
         repo:
             url: git@github.com:PyPanel/testflaskapp.git 
         site:
+            domain: testflaskapp
+        app:
             type: uwsgi
         app:
             venv: True

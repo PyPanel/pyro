@@ -21,5 +21,4 @@ webapps:
             domain: testflaskapp
         app:
             type: uwsgi
-        app:
             venv: True

@@ -1,7 +1,10 @@
 {% for name, conf in pillar.get('webapps', {}).iteritems() %}
 {{ name }}:
-    group.present
-    user.present:
+    group:
+        - present
+
+    user:
+        - present
         - home: /home/{{ name }}
         - groups:
             - {{ name }}
@@ -9,7 +12,8 @@
             - group: {{ name }}
 
 /home/{{ name }}:
-    file.directory:
+    file:
+        - directory
         - user: {{ name }}
         - group: {{ name }}
         - mode: 750

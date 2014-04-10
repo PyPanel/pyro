@@ -1,11 +1,10 @@
 base:
     '*':
-        - base
         - users
         - ssh
-        - logrotate
-        - postgresql
-        - git
-        - python
-        - uwsgi
-        - nginx
+#       - logrotate
+#       - postgresql
+#       - git
+#       - python
+#       - uwsgi
+#       - nginx

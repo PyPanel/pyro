@@ -1,11 +1,13 @@
 uwsgi:
-    pkg.installed:
+    pkg:
+        - installed
         - names:
             - uwsgi
             - uwsgi-extra
             - uwsgi-plugin-python
 
-    service.running
+    service:
+        - running
         - enable: True
         - require:
             - pkg: uwsgi
@@ -15,7 +17,8 @@ uwsgi:
 {% for name, conf in pillar.get('webapps', {}).iteritems() %}
 {% if conf.get('app') and conf['app'].get('type') == 'uwsgi' %}
 /etc/uwsgi/apps-available/{{ name }}.ini:
-    file.managed:
+    file:
+        - managed
         - source: salt://uwsgi/files/app.jinja
         - template: jinja
         - user: root
@@ -27,10 +30,12 @@ uwsgi:
             - pkg: uwsgi
 
 /etc/uwsgi/apps-enabled/{{ name }}.ini:
-    file.symlink:
+    file:
+        - symlink
         - target: /etc/uwsgi/apps-available/{{ name }}.ini
         - force: False
         - require:
             - pkg: uwsgi
+            - file: /etc/uwsgi/apps-available/{{ name }}.ini
 {% endif %}
 {% endfor %}

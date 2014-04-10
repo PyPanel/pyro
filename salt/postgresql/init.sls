@@ -1,11 +1,13 @@
 postgresql:
-    pkg.installed:
+    pkg:
+        - installed
         - names:
             - postgresql-9.1
             - python-psycopg2
             - postgresql-server-dev-9.1
 
-    service.running:
+    service:
+        - running
         - enable: True
         - watch:
             - file: /etc/postgresql/9.1/main/pg_hba.conf
@@ -13,7 +15,8 @@ postgresql:
             - pkg: postgresql
 
 /etc/postgresql/9.1/main/pg_hba.conf:
-    file.managed:
+    file:
+        - managed
         - source: salt://postgresql/files/pg_hba.conf
         - user: postgres
         - group: postgres
@@ -24,13 +27,15 @@ postgresql:
 {% for name, conf in pillar.get('webapps', {}).iteritems() %}
 {% if conf.get('database') and conf['database'].get('type', 'postgresql') == 'postgresql' %}
 postgres_user_{{ name }}:
-    postgres_user.present:
+    postgres_user:
+        - present
         - name: {{ name }}
         - password: {{ conf['database']['password'] }}
         - runas: postgres
 
 postgres_database_{{ name }}:
-    postgres_database.present:
+    postgres_database:
+        - present
         - name: {{ name }}
         - owner: {{ name }}
         - require:

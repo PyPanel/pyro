@@ -1,18 +1,21 @@
 logrotate:
-    pkg.installed
+    pkg:
+        - installed
 
 {% for name, conf in pillar.get('webaps', {}).iteritems() %}
 /home/{{ name }}/log:
-    file.directory:
+    file:
+        - directory
         - user: {{ name }}
         - group: www-data
         - mode: 775
         - makedirs: True
         - require:
-            - file.directory: /home/{{ name }}
+            - file: /home/{{ name }}
 
 /etc/logrotate.d/{{ name }}:
-    file.managed:
+    file:
+        - managed
         - source: salt://logrotate/files/logrotate.jinja
         - template: jinja
         - context:

@@ -1,5 +1,6 @@
 python:
-    pkg.installed:
+    pkg:
+        - installed
         - names:
             - python-dev
             - python-virtualenv
@@ -8,20 +9,22 @@ python:
 {% for name, conf in pillar.get('webapps', {}).iteritems() %}
 {% if conf.get('app') and conf['app'].get('venv', True) %}
 /home/{{ name }}/venv:
-    file.directory:
+    file:
+        - directory
         - user: {{ name }}
         - grou: www-data
         - mode: 775
         - makedirs: True
         - require:
-            - file.directory: /home/{{ name }}
+            - file: /home/{{ name }}
 
-    virtualenv.manage:
+    virtualenv:
+        - managed
         - requirements: /home/{{ name }}/www/{{ conf['app'].get('requirements', 'requirements.txt') }}
         - clear: False
         - runas: {{ name }}
         - require:
-            - file.directory: /home/{{ name }}/venv
+            - file: /home/{{ name }}/venv
             - file: /home/{{ name }}/www/{{ conf['app'].get('requirements', 'requirements.txt') }}
             - pkg: python_packages
 {% endif %}

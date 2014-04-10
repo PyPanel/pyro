@@ -1,7 +1,9 @@
 nginx:
-    pkg.installed
+    pkg:
+        - installed
 
-    service.running:
+    service:
+        - running
         - enable: True
         - require:
             - pkg: nginx
@@ -12,12 +14,14 @@ nginx:
             - file: /etc/nginx/sites-enabled/*
 
 /etc/nginx/sites-enabled/default:
-    file.absent
+    file:
+        - absent
 
 {% for name, conf in pillar.get('webapps', {}).iteritems() %}
 {% if conf.get('site') %}
 /etc/nginx/sites-available/{{ name }}.conf:
-    file.managed:
+    file:
+        - managed
         - source: salt://nginx/files/site.jinja
         - template: jinja
         - user: root
@@ -32,7 +36,8 @@ nginx:
             ssl: False
 
 /etc/nginx/sites-enabled/{{ name }}.conf:
-    file.symlink:
+    file:
+        - symlink
         - target: /etc/nginx/sites-available/{{ name }}.conf
         - watch_in:
             - service: nginx

@@ -12,7 +12,7 @@ git:
         - mode: 775
         - makedirs: True
         - require:
-            - file.directory: /home/{{ name }}
+            - file: /home/{{ name }}
 
 {{ conf['repo']['url'] }}:
     git:

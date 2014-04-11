@@ -27,3 +27,5 @@ webapps:
             type: uwsgi
             venv: True
             reqs: requirements.txt
+        postgresql:
+            password: somepass

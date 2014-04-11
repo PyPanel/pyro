@@ -30,7 +30,7 @@ postgres_user_{{ name }}:
     postgres_user:
         - present
         - name: {{ name }}
-        - password: {{ conf['database']['password'] }}
+        - password: {{ conf['postgresql']['password'] }}
         - runas: postgres
 
 postgres_database_{{ name }}:

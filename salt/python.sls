@@ -7,12 +7,12 @@ python:
             - python-pip
 
 {% for name, conf in pillar.get('webapps', {}).iteritems() %}
-{% if conf.get('app') and conf['app'].get('venv', True) %}
+{% if conf.get('app') and conf['app'].get('venv', False) %}
 /home/{{ name }}/venv:
     file:
         - directory
         - user: {{ name }}
-        - grou: www-data
+        - group: www-data
         - mode: 775
         - makedirs: True
         - require:
@@ -20,12 +20,13 @@ python:
 
     virtualenv:
         - managed
-        - requirements: /home/{{ name }}/www/{{ conf['app'].get('requirements', 'requirements.txt') }}
+        {%- if conf['app'].get('reqs') %}
+        - requirements: /home/{{ name }}/www/{{ conf['app']['reqs'] }}
+        {%- endif %}
         - clear: False
         - runas: {{ name }}
         - require:
             - file: /home/{{ name }}/venv
-            - file: /home/{{ name }}/www/{{ conf['app'].get('requirements', 'requirements.txt') }}
-            - pkg: python_packages
+            - pkg: python
 {% endif %}
 {% endfor %}

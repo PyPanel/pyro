@@ -4,7 +4,7 @@ base:
         - ssh
 #       - logrotate
 #       - postgresql
-#       - git
-#       - python
-#       - uwsgi
+        - git
+        - python
+        - uwsgi
 #       - nginx

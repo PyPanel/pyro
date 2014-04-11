@@ -22,13 +22,15 @@ ssh:
         - require:
             - file: /home/{{ name }}
 
+{% if conf.get('auth_keys') %}
 ssh_auth_{{ name }}:
     ssh_auth:
         - present
         - user: {{ name }}
-        - source: salt://ssh/files/{{ name }}.id_rsa.pub
+        - source: salt://ssh/files/{{ conf.get('auth_keys') }}.id_rsa.pub
         - require:
             - file: /home/{{ name }}/.ssh
+{% endif %}
 
 /home/{{ name }}/.ssh/known_hosts:
     file:

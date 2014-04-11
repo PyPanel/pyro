@@ -19,6 +19,7 @@ git:
         - latest
         - rev: {{ conf['repo'].get('rev', 'master') }}
         - target: /home/{{ name }}/www
+        - user: {{ name }}
         - force: True
         - require:
             - pkg: git

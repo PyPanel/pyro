@@ -2,23 +2,28 @@
 # webapps:
 #    exampleapp:
 #        repo:
-#           url: git@github.com:someuser/somerepo.git
-#           rev: master
+#           type: bitbucket (default: github)
+#           url: git@github.com:someuser/somerepo.git (required)
+#           rev: develop (default: master)
 #        site:
-#            type: uwsgi
+#            domain: yourdomain.com (required)
+#            aliases: (optional)
+#               - www.yourdomain.com
 #        app:
-#            venv: True
-#            requirements: requirements.pip
-#        database:
-#            password: somepass
+#            type: uwsgi (default: static)
+#            venv: True (default: False)
+#            reqs: requirements.pip (optional)
+#        postgresql: (optional)
+#            password: somepass (required)
 #
 
 webapps:
     testflaskapp:
         repo:
-            url: git@github.com:PyPanel/testflaskapp.git 
+            url: https://github.com/PyPanel/testflaskapp.git
         site:
             domain: testflaskapp
         app:
             type: uwsgi
             venv: True
+            reqs: requirements.txt

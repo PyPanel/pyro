@@ -2,8 +2,8 @@ base:
     '*':
         - users
         - ssh
-#       - logrotate
-#       - postgresql
+        - logrotate
+        - postgresql
         - git
         - python
         - uwsgi

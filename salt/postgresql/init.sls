@@ -25,7 +25,7 @@ postgresql:
             - pkg: postgresql
 
 {% for name, conf in pillar.get('webapps', {}).iteritems() %}
-{% if conf.get('database') and conf['database'].get('type', 'postgresql') == 'postgresql' %}
+{% if conf.get('postgresql') %}
 postgres_user_{{ name }}:
     postgres_user:
         - present
@@ -43,4 +43,3 @@ postgres_database_{{ name }}:
         - runas: postgres
 {% endif %}
 {% endfor %}
-{% endif %}

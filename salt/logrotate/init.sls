@@ -2,7 +2,7 @@ logrotate:
     pkg:
         - installed
 
-{% for name, conf in pillar.get('webaps', {}).iteritems() %}
+{% for name, conf in pillar.get('webapps', {}).iteritems() %}
 /home/{{ name }}/log:
     file:
         - directory

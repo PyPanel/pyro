@@ -8,3 +8,4 @@ base:
         - python
         - uwsgi
         - nginx
+        - ufw

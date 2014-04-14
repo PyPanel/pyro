@@ -10,25 +10,44 @@ ufw:
 ufw enable:
     cmd:
         - run
-        - unless: ufw status | grep -q active
-        - runas: root
+        - unless: ufw status \ grep -q active
         - require:
             - pkg: ufw
 
-ufw allow OpenSS:
+ufw logging on:
     cmd:
         - run
-        - unless: ufw app list | grep -q OpenSSH
-        - runas: root
+        - unless: ufw status \ grep -q active
+        - require:
+            - pkg: ufw
+
+ufw default deny:
+    cmd:
+        - run
+        - unless: ufw status \ grep -q active
+        - require:
+            - pkg: ufw
+
+ufw allow OpenSSH:
+    cmd:
+        - run
+        - unless: ufw app list \ grep -q OpenSSH
         - require:
             - service: ufw
             - pkg: ssh
 
+ufw allow "Nginx Full":
+    cmd:
+        - run
+        - unless: ufw app list \ grep -q "Nginx HTTP" 
+        - require:
+            - service: ufw
+            - pkg: nginx
+
 ufw allow "Nginx HTTP":
     cmd:
         - run
-        - unless: ufw app list | grep -q "Nginx HTTP" 
-        - runas: root
+        - unless: ufw app list \ grep -q "Nginx HTTP" 
         - require:
             - service: ufw
             - pkg: nginx
@@ -36,8 +55,7 @@ ufw allow "Nginx HTTP":
 ufw allow "Nginx HTTPS":
     cmd:
         - run
-        - unless: ufw app list | grep -q "Nginx HTTPS" 
-        - runas: root
+        - unless: ufw app list \ grep -q "Nginx HTTPS" 
         - require:
             - service: ufw
             - pkg: nginx

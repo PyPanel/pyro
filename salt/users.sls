@@ -15,8 +15,8 @@
     file:
         - directory
         - user: {{ name }}
-        - group: {{ name }}
-        - mode: 750
+        - group: www-data
+        - mode: 770
         - makedirs: True
         - require:
             - user: {{ name }}

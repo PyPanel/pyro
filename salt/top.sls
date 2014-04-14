@@ -7,4 +7,4 @@ base:
         - git
         - python
         - uwsgi
-#       - nginx
+        - nginx

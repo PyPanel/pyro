@@ -8,9 +8,6 @@ nginx:
         - require:
             - pkg: nginx
         - watch:
-            - file: /etc/nginx/nginx.conf
-            - file: /etc/nginx/conf.d/*.conf
-            - file: /etc/nginx/mime.types
             - file: /etc/nginx/sites-enabled/*
 
 /etc/nginx/sites-enabled/default:
@@ -18,6 +15,16 @@ nginx:
         - absent
 
 {% for name, conf in pillar.get('webapps', {}).iteritems() %}
+{{ name }}_www_data:
+    user:
+        - present
+        - name: www-data
+        - groups:
+            - {{ name }}
+        - require:
+            - pkg: nginx
+            - group: {{ name }}
+
 {% if conf.get('site') %}
 /etc/nginx/sites-available/{{ name }}.conf:
     file:
@@ -29,11 +36,21 @@ nginx:
         - mode: 644
         - require:
             - pkg: nginx
-        - context: {{ conf.get('site', {}) }}
-        - defaults:
-            root: /home/{{ name }}/www
-            site_type: static
-            ssl: False
+        - context:
+            name: {{ name }}
+            domain: {{ conf['site']['domain'] }}
+            {% if conf['site'].get('aliases') %}
+            aliases:
+            {%- for alias in conf['site']['aliases'] %}
+            - {{ alias }}
+            {%- endfor %}
+            {% else %}
+            aliases: False
+            {% endif %}
+            ssl: {{ conf['site'].get('ssl', False) }}
+            app_type: {{ conf['app'].get('type', 'static') }}
+            default: False
+            static_prefix: False
 
 /etc/nginx/sites-enabled/{{ name }}.conf:
     file:

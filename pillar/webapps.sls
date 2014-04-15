@@ -29,3 +29,15 @@ webapps:
             reqs: requirements.txt
         postgresql:
             password: somepass
+
+    testdjangoapp:
+        repo:
+            url: https://github.com/PyPanel/testdjangoapp.git
+        site:
+            domain: testdjangoapp
+        app:
+            type: uwsgi
+            venv: True
+            reqs: requirements.txt
+        postgresql:
+            password: somepass

@@ -9,3 +9,4 @@ base:
         - uwsgi
         - nginx
         - ufw
+        - cron

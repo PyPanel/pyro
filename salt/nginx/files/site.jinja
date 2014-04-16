@@ -28,7 +28,7 @@ server {
     server_name {{ domain }};
     client_max_body_size 10m;
     root /home/{{ name }}/www;
-    access_log /home/{{ name }}/log/nginx.access.log;
+    access_log /home/{{ name }}/log/access.log;
     keepalive_timeout 5;
 
     location = /robots.txt {

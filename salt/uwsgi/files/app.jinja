@@ -3,6 +3,7 @@
 callable = application
 chdir = /home/{{ name }}/www
 home = /home/{{ name }}/venv
+logto = /home/{{ name }}/log/app.log
 master = true
 max-requests = 5000
 module = {{ name }}.wsgi

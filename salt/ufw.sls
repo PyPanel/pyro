@@ -10,21 +10,21 @@ ufw:
 ufw enable:
     cmd:
         - run
-        - unless: ufw status \ grep -q active
+        - onlyif: ufw status \ grep -q inactive
         - require:
             - pkg: ufw
 
 ufw logging on:
     cmd:
         - run
-        - unless: ufw status \ grep -q active
+        - unless: ufw status \ grep -q inactive
         - require:
             - pkg: ufw
 
 ufw default deny:
     cmd:
         - run
-        - unless: ufw status \ grep -q active
+        - unless: ufw status \ grep -q inactive
         - require:
             - pkg: ufw
 

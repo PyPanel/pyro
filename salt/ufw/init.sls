@@ -39,7 +39,7 @@ ufw allow OpenSSH:
 ufw allow "Nginx Full":
     cmd:
         - run
-        - unless: ufw app list \ grep -q "Nginx HTTP" 
+        - unless: ufw app list \ grep -q "Nginx Full"
         - require:
             - service: ufw
             - pkg: nginx
@@ -47,7 +47,7 @@ ufw allow "Nginx Full":
 ufw allow "Nginx HTTP":
     cmd:
         - run
-        - unless: ufw app list \ grep -q "Nginx HTTP" 
+        - unless: ufw app list \ grep -q "Nginx HTTP"
         - require:
             - service: ufw
             - pkg: nginx
@@ -55,7 +55,7 @@ ufw allow "Nginx HTTP":
 ufw allow "Nginx HTTPS":
     cmd:
         - run
-        - unless: ufw app list \ grep -q "Nginx HTTPS" 
+        - unless: ufw app list \ grep -q "Nginx HTTPS"
         - require:
             - service: ufw
             - pkg: nginx
